@@ -5,9 +5,11 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.1</version>
+		<!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
+
 	<groupId>com.example</groupId>
 	<artifactId>wsdl-cliente</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -15,7 +17,7 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
@@ -28,6 +30,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>wsdl4j</groupId>
@@ -36,7 +44,7 @@
 		<dependency>
 			<groupId>org.jvnet.jaxb2.maven2</groupId>
 			<artifactId>maven-jaxb2-plugin</artifactId>
-			<version>0.13.1</version>
+			<version>0.14.0</version>
 		</dependency>
 
 		<dependency>
@@ -50,7 +58,27 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 	</dependencies>
+
+	<!-- tag::profile[] -->
+	<profiles>
+		<profile>
+			<id>java11</id>
+			<activation>
+				<jdk>[11,)</jdk>
+			</activation>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.glassfish.jaxb</groupId>
+					<artifactId>jaxb-runtime</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	<!-- end::profile[] -->
+
 
 	<build>
 		<plugins>
@@ -63,12 +91,17 @@
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.13.1</version>
+				<version>0.14.0 </version>
 				<executions>
 					<execution>
 						<goals>
 							<goal>generate</goal>
 						</goals>
+						<configuration>
+							<generateDirectory>target/generated-sources/xjc</generateDirectory>
+							<addTestCompileSourceRoot>true</addTestCompileSourceRoot>
+							<schemaDirectory>src/resources</schemaDirectory>
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>
@@ -76,7 +109,7 @@
 					<generatePackage>com.example.wsdlcliente.wsdl</generatePackage>
 					<schemas>
 						<schema>
-							<!-- <url>http://localhost:8080/ws/paises.wsdl</url> -->
+							 <url>https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl</url>
 							<fileset>
 								<directory>${project.basedir}/src/main/resources/</directory>
 								<includes>
