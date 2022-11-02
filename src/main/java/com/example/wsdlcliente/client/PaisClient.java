@@ -1,10 +1,9 @@
-package com.example.wsdlcliente.clients;
+package com.example.wsdlcliente.client;
 
 import com.example.wsdlcliente.wsdl.GetPaisRequest;
 import com.example.wsdlcliente.wsdl.GetPaisResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 
